@@ -1,0 +1,4 @@
+This JSON files are the game data. They are not meant to be modified or read by the user.
+Any change made to this file could result in errors in the game.
+If an error occures after modifying any file, the only solution is to delete the file itself. The game will recreate them.
+If you don't know what you are doing, don't do it.

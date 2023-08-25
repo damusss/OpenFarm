@@ -1,0 +1,13 @@
+"filename", "language", "Python", "comment", "blank", "total"
+"d:\PyGames\OpenFarm\assetloader.py", "Python", 42, 0, 0, 42
+"d:\PyGames\OpenFarm\settings.py", "Python", 16, 1, 0, 17
+"d:\PyGames\OpenFarm\support.py", "Python", 2, 0, 1, 3
+"d:\PyGames\OpenFarm\world\house.py", "Python", 73, 4, 7, 84
+"d:\PyGames\OpenFarm\world\inventory.py", "Python", 43, 0, 10, 53
+"d:\PyGames\OpenFarm\world\player.py", "Python", 11, 0, -1, 10
+"d:\PyGames\OpenFarm\world\soil.py", "Python", 1, 0, 0, 1
+"d:\PyGames\OpenFarm\world\sprites.py", "Python", 16, 0, -1, 15
+"d:\PyGames\OpenFarm\world\ui.py", "Python", 248, 5, 36, 289
+"d:\PyGames\OpenFarm\world\world.py", "Python", 6, 0, 0, 6
+"d:\PyGames\OpenFarm\world\zone.py", "Python", 1, 0, 0, 1
+"Total", "-", 459, 10, 52, 521

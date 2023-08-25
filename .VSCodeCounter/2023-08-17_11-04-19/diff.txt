@@ -1,0 +1,46 @@
+Date : 2023-08-17 11:04:19
+Directory : d:\PyGames\OpenFarm
+Total : 17 files,  735 codes, 4 comments, 81 blanks, all 820 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Python   |         15 |        733 |          4 |         81 |        818 |
+| JSON     |          2 |          2 |          0 |          0 |          2 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                               |         17 |        735 |          4 |         81 |        820 |
+| . (Files)                                       |          6 |         27 |          2 |          4 |         33 |
+| data                                            |          2 |          2 |          0 |          0 |          2 |
+| data\test_world                                 |          2 |          2 |          0 |          0 |          2 |
+| world                                           |          9 |        706 |          2 |         77 |        785 |
++-------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                        | language | code       | comment    | blank      | total      |
++-------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\PyGames\OpenFarm\assetloader.py              | Python   |          9 |          0 |          0 |          9 |
+| d:\PyGames\OpenFarm\data\test_world\0;0.json    | JSON     |          1 |          0 |          0 |          1 |
+| d:\PyGames\OpenFarm\data\test_world\player.json | JSON     |          1 |          0 |          0 |          1 |
+| d:\PyGames\OpenFarm\easy_visualizer.py          | Python   |        -33 |         -2 |        -11 |        -46 |
+| d:\PyGames\OpenFarm\main.py                     | Python   |          1 |          2 |          2 |          5 |
+| d:\PyGames\OpenFarm\settings.py                 | Python   |          9 |          0 |          0 |          9 |
+| d:\PyGames\OpenFarm\support.py                  | Python   |          7 |          0 |          3 |         10 |
+| d:\PyGames\OpenFarm\visualizer.py               | Python   |         34 |          2 |         10 |         46 |
+| d:\PyGames\OpenFarm\world\generic.py            | Python   |         30 |          0 |          5 |         35 |
+| d:\PyGames\OpenFarm\world\house.py              | Python   |         71 |          0 |          3 |         74 |
+| d:\PyGames\OpenFarm\world\inventory.py          | Python   |          2 |          0 |          1 |          3 |
+| d:\PyGames\OpenFarm\world\player.py             | Python   |         51 |          0 |          6 |         57 |
+| d:\PyGames\OpenFarm\world\soil.py               | Python   |         37 |          0 |          6 |         43 |
+| d:\PyGames\OpenFarm\world\sprites.py            | Python   |        245 |          0 |         42 |        287 |
+| d:\PyGames\OpenFarm\world\ui.py                 | Python   |          8 |          2 |          3 |         13 |
+| d:\PyGames\OpenFarm\world\world.py              | Python   |         12 |          0 |          3 |         15 |
+| d:\PyGames\OpenFarm\world\zone.py               | Python   |        250 |          0 |          8 |        258 |
+| Total                                           |          |        735 |          4 |         81 |        820 |
++-------------------------------------------------+----------+------------+------------+------------+------------+

@@ -1,0 +1,46 @@
+Main                                                                        (main.py)
+    AssetLoader                                                             (assetloader.py)
+        Spritesheet                                                         (spritesheet.py)
+        SingleSpritesheet                                                   (spritesheet.py)
+    Audio                                                                   (audio.py)
+    World                                                                   (world/world.py)
+        Zone                                                                (world/zone.py)
+            Soil                                                            (world/soil.py)
+            pygame_groups (Group | CameraGroup)                             (world/sprites.py - world/generic.py)
+                (Generic)
+                BorderTree
+                Bush
+                Tree
+                Berry
+                Stump
+                Water
+                Tile
+                Decoration
+                DestroyMask
+                Cow (Animal)
+                Chicken (Animal)
+                ChickenNest
+                ChickenHouse
+                InvisibleVillageTile
+                SoilDirt -> Soil
+                SoilWater -> Soil
+                SoilPlant -> Soil
+                HouseExteriorTile -> House.HouseExterior
+            House:list                                                      (world/house.py)
+                HouseExterior                                               (world/house.py)
+                HouseInterior                                               (world/house.py)
+                    pygame_groups (Group | CameraGroup)                     (world/sprites.py - world/generic.py)
+                        HouseTile
+                        HouseDecoration
+            BorderTreePack:list                                             (world/generic.py)
+        Player                                                              (world/player.py)
+            Inventory                                                       (world/inventory.py)
+            InteractSelector                                                (world/selector.py)
+        Transition                                                          (world/transition.py)
+        UI                                                                  (world/ui.py)
+            TabUI                                                           (world/ui.py)
+            BagUI                                                           (world/ui.py)
+        Dialogue                                                            (world/dialogue.py)
+        DayNightCycle                                                       (world/dnc.py)
+settings constants                                                          (settings.py)
+support functions                                                           (support.py)
