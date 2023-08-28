@@ -14,7 +14,26 @@ def load_audio(name, volume=1, ext="mp3"):
         "volume":volume
     }
 
+def file_names(path: str) -> list[str]:
+    return [
+        file_name.split(".")[0] for file_name in os.listdir(path) if "." in file_name
+    ]
 
+
+def file_names_full(path: str) -> list[str]:
+    return [name for name in os.listdir(path) if "." in name]
+
+
+def file_names_strict(path: str, exclude: list[str], extensions: list[str]) -> list[str]:
+    files = [
+        file_name.split(".")[0]
+        for file_name in os.listdir(path)
+        if "." in file_name and file_name.split(".")[1] in extensions
+    ]
+    for file in exclude:
+        if file in files:
+            files.remove(file)
+    return files
 
 
 # math

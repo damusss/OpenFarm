@@ -1,5 +1,5 @@
 from settings import *
-from support import get_window, quit_all, set_cursor, file_names_extra
+from support import get_window, quit_all, set_cursor, file_names_strict
 from world.zone import Zone
 from world.player import Player
 from world.transition import Transition
@@ -22,7 +22,7 @@ class World:
         self.dialogue = Dialogue(self)
         self.dnc = DayNightCycle(self)
 
-        self.zones = file_names_extra(f"data/{self.name}", ["player"], ["json"])
+        self.zones = file_names_strict(f"data/{self.name}", ["player"], ["json"])
         self.current_zone = Zone(self, (0,0), from_file = True if "0;0" in self.zones else False)
         if not "0;0" in self.zones: self.zones.append("0;0")
         

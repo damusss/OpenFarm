@@ -1,3 +1,4 @@
+#import ez_profile
 from settings import *
 from assetloader import AssetLoader
 from audio import Audio

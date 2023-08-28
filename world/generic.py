@@ -75,6 +75,8 @@ class CameraGroup(Group):
         super().__init__()
         self.world = world
         self.display_surface = get_window()
+        self.sorted_cache = []
+        self.super = super()
     
     def custom_draw(self):
         for sprite in sorted(self.spritedict, key=lambda sprite: sprite.pos.y):
