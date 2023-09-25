@@ -256,7 +256,7 @@ class BagUI:
         self.inventory = ui.inventory
         self.selector = self.ui.player.selector
 
-        self.bg_img = generate_menu(self.ui_assets["original-menu"], self.ui_assets["menu"].get_width(), self.ui_assets["menu"].get_height()*1.4)
+        self.bg_img = generate_menu(self.ui_assets["original-menu"], self.ui_assets["menu"].get_width(), self.ui_assets["menu"].get_height()*1.6)
         self.bg_rect = self.bg_img.get_rect(topright=(self.ui.sign_rect.right, UI_OFFSET))
         
         self.open_offset = self.bg_rect.height+UI_OFFSET
@@ -312,6 +312,10 @@ class BagUI:
         for item_name, item_amount in object_tools.items():
             
             is_obj = item_name in OBJECTS
+            if not is_obj and was_obj and stage == "right":
+                stage = "left"
+                y += self.square_img.get_height()
+            
             x = self.left_x if stage == "left" else self.right_x
             if not is_obj and was_obj:
                 y += self.square_img.get_height()//3
@@ -337,7 +341,7 @@ class BagUI:
             item_img = self.ui_assets["items-small"][item_name]
             amount_txt = self.ui.amount_font.render(f"x{item_amount}", ANTIALAS, TEXT_DARK)
             item_rect = item_img.get_rect(center = (square_rect.centerx-square_rect.w//4,square_rect.centery))
-            amount_trect = amount_txt.get_rect(midleft = item_rect.midright)
+            amount_trect = amount_txt.get_rect(midleft = (item_rect.right+2, item_rect.centery))
             
             self.display_surface.blit(self.square_img, square_rect.topleft+self.offset)
             self.display_surface.blit(item_img, item_rect.topleft+self.offset)

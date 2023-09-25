@@ -1,5 +1,5 @@
 from settings import *
-from support import load, load_list, load_dict, single_sheet, load_sheet, file_names, make_cursor
+from support import load, load_list, load_dict, single_sheet, load_sheet, file_names
 
 class AssetLoader:
     def __init__(self):
@@ -92,7 +92,6 @@ class AssetLoader:
             "items": load_dict("items", True, UI_SCALE_B),
             "items-small": load_dict("items", True, UI_SCALE)
         }
-        self.cursors = {name: make_cursor(name, self.assets) for name in self.assets["ui"]["mouse"].keys()}
 
     def __getitem__(self, name):
         return self.assets[name]

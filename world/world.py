@@ -6,6 +6,7 @@ from world.transition import Transition
 from world.ui import UI
 from world.dialogue import Dialogue
 from world.dnc import DayNightCycle
+from world.placing import PlacingSystem
 
 class World:
     def __init__(self, main, world_name):
@@ -21,6 +22,7 @@ class World:
         self.transition = Transition(self)
         self.dialogue = Dialogue(self)
         self.dnc = DayNightCycle(self)
+        self.placing = PlacingSystem(self)
 
         self.zones = file_names_strict(f"data/{self.name}", ["player"], ["json"])
         self.current_zone = Zone(self, (0,0), from_file = True if "0;0" in self.zones else False)
@@ -86,9 +88,11 @@ class World:
         self.ui.update(dt)
         self.dialogue.update(dt)
         self.dnc.update(dt)
+        self.placing.update(dt)
 
         self.display_surface.fill(FOG_COLOR)
         self.current_zone.draw() if self.current_zone else None
+        self.placing.draw()
         self.dialogue.draw()
         self.ui.draw()
         self.transition.draw()
@@ -103,3 +107,4 @@ class World:
             self.ui.event(event)
             self.dialogue.event(event)
             if self.current_zone: self.current_zone.event(event)
+            self.placing.event(event)

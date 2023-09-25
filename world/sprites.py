@@ -166,6 +166,7 @@ class InvisibleVillageElementTile(pygame.sprite.Sprite):
         self.hitbox = pygame.Rect(topleft, (TILE_SIZE, TILE_SIZE))
         self.rect = self.hitbox.copy()
         self.pos = vector(self.rect.center)
+        self.asset_name = "invisible"
 
 class Merchant(HouseGeneric):
     def __init__(self, center, interior, name, data):

@@ -12,9 +12,10 @@ class Main:
         self.clock = pygame.time.Clock()
         self.assets = AssetLoader()
         self.audio = Audio()
-
-        #for file in os.listdir("data/test_world"):
-        #    os.remove(f"data/test_world/{file}")
+        
+        if ERASE_FOLDER:
+            for file in os.listdir("data/test_world"):
+                os.remove(f"data/test_world/{file}")
 
         self.world = World(self, "test_world")
         self.in_world = True

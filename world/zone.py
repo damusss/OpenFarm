@@ -43,6 +43,7 @@ class Zone:
         self.invis_village_elements = Group()
         self.village_doors = Group()
         self.tiles = Group()
+        self.placeables = Group()
         
         self.border_trees = []
         self.village_houses:list[House] = []
@@ -268,6 +269,7 @@ class Zone:
         self.village_elements.empty()
         self.village_doors.empty()
         self.tiles.empty()
+        self.placeables.empty()
 
         del self.floor_surf
         del self.floor_rect
@@ -463,31 +465,39 @@ class Zone:
 
     def water_there(self, pos):
         for water in self.waters:
-            if water.hitbox.collidepoint(pos): return True
+            if water.rect.collidepoint(pos): return True
         return False
     
     def village_there(self, pos):
         for element in self.village_elements:
-            if element.hitbox.collidepoint(pos): return True
+            if element.rect.collidepoint(pos): return True
         for element in self.invis_village_elements:
-            if element.hitbox.collidepoint(pos): return True
+            if element.rect.collidepoint(pos): return True
         return False
 
     def tree_there(self, pos):
         for tree in self.trees:
-            if tree.hitbox.collidepoint(pos): return True
+            if tree.rect.collidepoint(pos): return True
         for tree in self.border_trees:
-            if tree.hitbox.collidepoint(pos): return True
+            if tree.rect.collidepoint(pos): return True
         return False
     
     def decoration_there(self, pos):
         for dec in self.decorations:
-            if dec.hitbox.collidepoint(pos): return True
+            if dec.rect.collidepoint(pos): return True
+        return False
+    
+    def placeable_there(self, pos):
+        for placeable in self.placeables:
+            if placeable.rect.collidepoint(pos): return True
         return False
 
     def is_farmable(self, pos):
-        return not self.tree_there(pos) and not self.water_there(pos) and not self.decoration_there(pos) and not self.village_there(pos)
+        return not self.tree_there(pos) and not self.water_there(pos) and not self.decoration_there(pos) and not self.village_there(pos) and not self.placeable_there(pos)
 
+    def can_place(self, pos):
+        return not self.tree_there(pos) and not self.water_there(pos) and not self.decoration_there(pos) and not self.village_there(pos) and not self.placeable_there(pos) and not self.player.hitbox.collidepoint(pos)
+    
     def update(self, dt):
         if self.in_house:
             self.current_house.interior.update(dt)

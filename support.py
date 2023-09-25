@@ -19,10 +19,8 @@ def file_names(path: str) -> list[str]:
         file_name.split(".")[0] for file_name in os.listdir(path) if "." in file_name
     ]
 
-
 def file_names_full(path: str) -> list[str]:
     return [name for name in os.listdir(path) if "." in name]
-
 
 def file_names_strict(path: str, exclude: list[str], extensions: list[str]) -> list[str]:
     files = [
@@ -83,11 +81,6 @@ def rect_circle(rect, center, radius):
     return False
 
 # utils
-def tint_surface(surface: pygame.Surface, tint):
-    tinted = surface.copy()
-    tinted.fill(tint, special_flags=pygame.BLEND_RGB_ADD)
-    return tinted
-
 def generate_menu(original_image, width, height, border=4, scale=UI_SCALE):
     # setup
     s, s2, ss, ss2 = border, border*2, int(border*UI_SCALE), int(border*2*UI_SCALE)
@@ -136,6 +129,13 @@ def generate_villager():
     else:
         dialogue = choice(gen_data["dialogues"])
         return name, {"trade":False, "dialogue": dialogue}
+    
+def item_shortcut(idx):
+    if idx < len(TOOLS):
+        return TOOLS[idx]
+    if idx < len(TOOLS)+len(OBJECTS):
+        return OBJECTS[idx-len(TOOLS)]
+    return None
 
 def list_remove_cond(iterable, condition):
     toremove = [el for el in iterable if condition(el)]
@@ -147,9 +147,6 @@ def quit_all():
 
 def get_window():
     return pygame.display.get_surface()
-
-def make_cursor(name, assets):
-    return pygame.Cursor((0,0),assets["ui"]["mouse"][name])
 
 def set_cursor(name, assets):
     try:
@@ -194,7 +191,10 @@ def empty_surf(sizes, color, flags=0):
     surf.fill(color)
     return surf
 
-def only_sprites_from_tuple(sprites): return {name:sprite for name, (sprite,_) in sprites.items()}
+def tint_surface(surface: pygame.Surface, tint):
+    tinted = surface.copy()
+    tinted.fill(tint, special_flags=pygame.BLEND_RGB_ADD)
+    return tinted
 
 def radial_image(surface:pygame.Surface, erase_angle):
     erase_angle -= 180

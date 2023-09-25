@@ -1,4 +1,5 @@
 from settings import *
+from support import item_shortcut
 
 class Inventory:
     def __init__(self, player):
@@ -79,21 +80,17 @@ class Inventory:
     def event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.unicode.isdecimal():
-                if int(event.unicode) in ITEM_SHORTCUT:
-                    thing = ITEM_SHORTCUT.get(int(event.unicode), None)
-                    if thing is None:
-                        self.selected_tool = ""
-                        self.selected_object = ""
-                    elif thing in TOOLS:
-                        self.selected_tool = thing; self.selected_object = ""
-                    elif thing in OBJECTS:
-                        if self.objects[thing] > 0: self.selected_object = thing; self.selected_tool = ""
-                        else: self.selected_object = ""; self.selected_tool = ""
-                        
-                    self.player.world.ui.tab.close()
-                else:
+                thing = item_shortcut(int(event.unicode))
+                if thing is None:
                     self.selected_tool = ""
                     self.selected_object = ""
+                elif thing in TOOLS:
+                    self.selected_tool = thing; self.selected_object = ""
+                elif thing in OBJECTS:
+                    if self.objects[thing] > 0: self.selected_object = thing; self.selected_tool = ""
+                    else: self.selected_object = ""; self.selected_tool = ""
+                    
+                self.player.world.ui.tab.close()
                     
             if event.key == pygame.K_BACKSLASH:
                 if self.selected_object:

@@ -39,6 +39,7 @@ class BorderTreePack:
             if not min_y or tree.rect.y < min_y: min_y = tree.rect.y
             if not max_y or tree.rect.bottom > max_y: max_y = tree.rect.bottom
         self.hitbox = pygame.Rect(min_x,min_y,max_x-min_x,max_y-min_y)
+        self.rect = self.hitbox
 
         self.image = pygame.Surface(self.hitbox.size, pygame.SRCALPHA); self.image.fill(0)
         for tree in self.trees: self.image.blit(tree.image, tree.rect.topleft-vector(self.hitbox.topleft))

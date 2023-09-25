@@ -2,36 +2,43 @@ import pygame, math
 from pygame import Vector2 as vector
 from random import randint, uniform, choice
 
+ERASE_FOLDER = False
+
 # WINDOW
 pygame.display.init()
+
 WIDTH, HEIGHT = WINDOW_SIZES = pygame.display.get_desktop_sizes()[0]
 H_WIDTH, H_HEIGHT = WIDTH//2, HEIGHT//2
 WINDOW_CENTER = vector(H_WIDTH, H_HEIGHT)
+
 WINDOW_TITLE = "Open Farm"
 WINDOW_FPS = 0
 
 # COLORS
 FOG_COLOR = (110,150,124)
 HOUSE_BG_COL = (40,40,40)
+NIGHT_COLOR = (0,50,120)
+TRANSITION_COL = FOG_COLOR
+
 TEXT_WHITE = (243,244,231)
 TEXT_LIGHT = (232,207,166)
 TEXT_DARK = (182,137,98)
-NIGHT_COLOR = (0,50,120)
-TRANSITION_COL = FOG_COLOR
 
 # COOLDOWNS
 BERRY_COOLDOWN =       60*1000
 TREE_COOLDOWN = 10    *60*1000
 COW_COOLDOWN = 4      *60*1000
 CHICKEN_COOLDOWN = 3  *60*1000
+
 DAY_START = 8         *3600
 SUNRISE_TIME = 6      *3600
 SUNSET_TIME = 19      *3600
 MIDNIGHT_TIME = 24    *3600
 DAY_END = 21          *3600
+
 CROP_COOLDOWNS = {
-    "tomato": 5*60*1000,
-    "wheat": 4*60*1000,
+    "tomato": 5       *60*1000,
+    "wheat": 4        *60*1000,
 }
 
 # SPEEDS
@@ -81,6 +88,7 @@ USE_SMALL = ["house"]
 FOG_SIZE = int(TILE_SIZE*3)
 NIGHT_ALPHA = 70
 TRANSITION_THRESHOLD = 30
+NO_TINT = (0,0,0)
 TINTS = [
     (0, 0, 0),
     (20, 0, 0),
@@ -96,25 +104,18 @@ TINTS = [
     (0, 20, 10),
     (10, 20, 0),
 ]
-NO_TINT = (0,0,0)
 
 # PLAYER
 PLAYER_MAX_WATER = 20
 INTERACT_RADIUS = TILE_SIZE*4
-ITEM_SHORTCUT = {
-    1: "axe",
-    2: "hoe",
-    3: "water",
-    4: "wheat-seeds",
-    5: "tomato-seeds",
-}
 
-# INVENTORY
+# inventory
 TOOLS = ["axe","hoe","water"]
-OBJECTS = ["wheat-seeds","tomato-seeds"]
+OBJECTS = ["wheat-seeds","tomato-seeds", "fence"]
 ITEMS = ["wood","tomato","wheat","grass","apple", "berry","egg","milk"]
 LOCKED_TOOLS = []
-PLACEABLE = []
+PLACEABLE = ["fence"]
+PLACEABLE_DATA = {"fence":2}
 
 # MENU
 UI_OFFSET = int(10*SCALE)
