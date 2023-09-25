@@ -15,36 +15,36 @@ class Fences:
             for y in range(size_y):
                 pos = topleft+vector(x*TILE_SIZE, y*TILE_SIZE)
                 if x == 0: # left
-                    if y == 0: HouseExteriorTile(pos, 1, zone, None, False, False, "fences", False) # topleft
-                    elif y == size_y-1: HouseExteriorTile(pos, 9, zone,None, False, False, "fences", False) # bottomleft
+                    if y == 0: HouseExteriorTile(pos, 1, zone, NO_TINT, None, False, False, "fences", False) # topleft
+                    elif y == size_y-1: HouseExteriorTile(pos, 9, zone, NO_TINT,None, False, False, "fences", False) # bottomleft
                     elif y == int(size_y/2): # left half
-                        t = HouseExteriorTile(pos, 12, zone, None, False, False, "fences", False)
+                        t = HouseExteriorTile(pos, 12, zone, NO_TINT, None, False, False, "fences", False)
                         t.kinematic = True
-                    elif y == int(size_y/2)-1: HouseExteriorTile(pos, 8, zone, None, False, False, "fences", False) # left half-1
-                    elif y == int(size_y/2)+1: HouseExteriorTile(pos, 0, zone, None, False, False, "fences", False) # left half+1
-                    else: HouseExteriorTile(pos, 4, zone, None, False, False, "fences", False) # left middle
+                    elif y == int(size_y/2)-1: HouseExteriorTile(pos, 8, zone, NO_TINT, None, False, False, "fences", False) # left half-1
+                    elif y == int(size_y/2)+1: HouseExteriorTile(pos, 0, zone, NO_TINT, None, False, False, "fences", False) # left half+1
+                    else: HouseExteriorTile(pos, 4, zone, NO_TINT, None, False, False, "fences", False) # left middle
                 elif x == size_x-1: # right
-                    if y == 0: HouseExteriorTile(pos, 3, zone, None, False, False, "fences", False) # topright
-                    elif y == size_y-1: HouseExteriorTile(pos, 11, zone, None, False, False, "fences", False) # bottomright
+                    if y == 0: HouseExteriorTile(pos, 3, zone, NO_TINT, None, False, False, "fences", False) # topright
+                    elif y == size_y-1: HouseExteriorTile(pos, 11, zone, NO_TINT, None, False, False, "fences", False) # bottomright
                     elif y == int(size_y/2): # right half
-                        t = HouseExteriorTile(pos, 12, zone, None, False, False, "fences", False)
+                        t = HouseExteriorTile(pos, 12, zone, NO_TINT, None, False, False, "fences", False)
                         t.kinematic = True
-                    elif y == int(size_y/2)-1: HouseExteriorTile(pos, 8, zone, None, False, False, "fences", False) # right half-1
-                    elif y == int(size_y/2)+1: HouseExteriorTile(pos, 0, zone, None, False, False, "fences", False) # right half+1
-                    else: HouseExteriorTile(pos, 4, zone, None, False, False, "fences", False) # right middle
+                    elif y == int(size_y/2)-1: HouseExteriorTile(pos, 8, zone, NO_TINT, None, False, False, "fences", False) # right half-1
+                    elif y == int(size_y/2)+1: HouseExteriorTile(pos, 0, zone, NO_TINT, None, False, False, "fences", False) # right half+1
+                    else: HouseExteriorTile(pos, 4, zone, NO_TINT, None, False, False, "fences", False) # right middle
                 elif x == int(size_x/2): # half
                     if y == 0 or y == size_y-1:
-                        t=HouseExteriorTile(pos, 12, zone, None, False, False, "fences", False)
+                        t=HouseExteriorTile(pos, 12, zone, NO_TINT, None, False, False, "fences", False)
                         t.kinematic = True
                     else: InvisibleVillageElementTile(pos, zone)
                 elif x == int(size_x/2)-1: # half - 1
-                    if y == 0 or y == size_y-1: HouseExteriorTile(pos, 15, zone, "left", False, False, "fences", False)
+                    if y == 0 or y == size_y-1: HouseExteriorTile(pos, 15, zone, NO_TINT, "left", False, False, "fences", False)
                     else: InvisibleVillageElementTile(pos, zone)
                 elif x == int(size_x/2)+1: # half + 1
-                    if y == 0 or y == size_y-1: HouseExteriorTile(pos, 13, zone, "right", False, False, "fences", False)
+                    if y == 0 or y == size_y-1: HouseExteriorTile(pos, 13, zone, NO_TINT, "right", False, False, "fences", False)
                     else: InvisibleVillageElementTile(pos, zone)
                 else: # middle
-                    if y == 0 or y == size_y-1: HouseExteriorTile(pos, 14, zone, None, False, False, "fences", False)
+                    if y == 0 or y == size_y-1: HouseExteriorTile(pos, 14, zone, NO_TINT, None, False, False, "fences", False)
                     else: InvisibleVillageElementTile(pos, zone)
         return pygame.Rect((topleft.x, topleft.y), (size_x*TILE_SIZE, size_y*TILE_SIZE))
 
@@ -61,7 +61,8 @@ class House:
         }
     max_size = 8*TILE_SIZE
 
-    def __init__(self, topleft, grid_pos, zone, from_file=False, **kwargs):
+    def __init__(self, topleft, grid_pos, zone, from_file=False, tint=None, **kwargs):
+        self.tint = tint if tint else choice(TINTS)
         self.topleft = vector(topleft)
         self.grid_pos = vector(grid_pos)
         self.zone = zone
@@ -96,45 +97,45 @@ class HouseExterior:
                 pos = (self.house.topleft.x+x*TILE_SIZE, self.house.topleft.y+y*TILE_SIZE)
                 if y == self.size_y-1: # bottom
                     if x == 0: # left
-                        HouseExteriorTile(pos, 21, self.zone, "right", False) # left wall
-                        HouseExteriorTile(pos, 32, self.zone, "right") # bottomleft roof
+                        HouseExteriorTile(pos, 21, self.zone, self.house.tint, "right", False) # left wall
+                        HouseExteriorTile(pos, 32, self.zone, self.house.tint, "right") # bottomleft roof
                     elif x == self.size_x-1: # right
-                        HouseExteriorTile(pos, 23, self.zone, "left", False) # right wall
-                        HouseExteriorTile(pos, 34, self.zone, "left") # bottomright roof
+                        HouseExteriorTile(pos, 23, self.zone, self.house.tint, "left", False) # right wall
+                        HouseExteriorTile(pos, 34, self.zone, self.house.tint, "left") # bottomright roof
                     elif x == int(self.size_x/2): # mid
-                        door = HouseExteriorTile(pos, 10, self.zone, roof=False, door=True) # door
+                        door = HouseExteriorTile(pos, 10, self.zone, self.house.tint, roof=False, door=True) # door
                         self.exit_loc = vector(door.rect.center)+ vector(0,TILE_SIZE*1.5)
-                        HouseExteriorTile(pos, 33, self.zone) # bottom roof
+                        HouseExteriorTile(pos, 33, self.zone, self.house.tint,) # bottom roof
                         # path
                         path_len = randint(3,7)
                         for i in range(path_len):
                             if i == 0:
-                                last = HouseExteriorTile(door.rect.bottomleft, 0, self.zone, hitbox_change="none", asset_name="paths", behind=True, roof=False)
+                                last = HouseExteriorTile(door.rect.bottomleft, 0, self.zone, self.house.tint, hitbox_change="none", asset_name="paths", behind=True, roof=False)
                             elif i == path_len-1: 
-                                HouseExteriorTile(last.rect.bottomleft, 8, self.zone, hitbox_change="none", asset_name="paths", behind=True, roof=False)
+                                HouseExteriorTile(last.rect.bottomleft, 8, self.zone, self.house.tint, hitbox_change="none", asset_name="paths", behind=True, roof=False)
                             else:
-                                last = HouseExteriorTile(last.rect.bottomleft, 4, self.zone, hitbox_change="none", asset_name="paths", behind=True, roof=False)
+                                last = HouseExteriorTile(last.rect.bottomleft, 4, self.zone, self.house.tint, hitbox_change="none", asset_name="paths", behind=True, roof=False)
                     else:
-                        HouseExteriorTile(pos, 22, self.zone, roof=False) # wall
-                        HouseExteriorTile(pos, 33, self.zone) # bottom roof
+                        HouseExteriorTile(pos, 22, self.zone, self.house.tint, roof=False) # wall
+                        HouseExteriorTile(pos, 33, self.zone, self.house.tint,) # bottom roof
                 elif y == 0: # top
-                    if x == 0: HouseExteriorTile(pos, 4, self.zone, "none") # topleft roof
-                    elif x == self.size_x-1: HouseExteriorTile(pos, 6, self.zone, "none") # topright roof
-                    else: HouseExteriorTile(pos, 5, self.zone, "none") # top roof
+                    if x == 0: HouseExteriorTile(pos, 4, self.zone, self.house.tint, "none") # topleft roof
+                    elif x == self.size_x-1: HouseExteriorTile(pos, 6, self.zone, self.house.tint, "none") # topright roof
+                    else: HouseExteriorTile(pos, 5, self.zone, self.house.tint, "none") # top roof
                 elif y == int(self.size_y/2): # mid
-                    if x == 0: HouseExteriorTile(pos, 18, self.zone, "right") # left mid roof
-                    elif x == self.size_x-1: HouseExteriorTile(pos, 20, self.zone, "left") # right mid roof
+                    if x == 0: HouseExteriorTile(pos, 18, self.zone, self.house.tint, "right") # left mid roof
+                    elif x == self.size_x-1: HouseExteriorTile(pos, 20, self.zone, self.house.tint, "left") # right mid roof
                     else:
-                        HouseExteriorTile(pos, 19, self.zone) # mid roof
-                        if not has_chimney: HouseExteriorTile(pos, 28, self.zone); has_chimney=True # chimney
+                        HouseExteriorTile(pos, 19, self.zone, self.house.tint,) # mid roof
+                        if not has_chimney: HouseExteriorTile(pos, 28, self.zone, self.house.tint, chimney=True); has_chimney=True # chimney
                 elif y < int(self.size_y/2): # above mid
-                    if x == 0: HouseExteriorTile(pos, 11, self.zone, "right") # left above mid roof
-                    elif x == self.size_x-1: HouseExteriorTile(pos, 13, self.zone, "left") # right above mid roof
-                    else: HouseExteriorTile(pos, 12, self.zone) # above mid roof
+                    if x == 0: HouseExteriorTile(pos, 11, self.zone, self.house.tint, "right") # left above mid roof
+                    elif x == self.size_x-1: HouseExteriorTile(pos, 13, self.zone, self.house.tint, "left") # right above mid roof
+                    else: HouseExteriorTile(pos, 12, self.zone, self.house.tint,) # above mid roof
                 else: # below mid
-                    if x == 0: HouseExteriorTile(pos, 25, self.zone, "right") # left below mid roof
-                    elif x == self.size_x-1: HouseExteriorTile(pos, 27, self.zone, "left") # right below mid roof
-                    else: HouseExteriorTile(pos, 26, self.zone) # below mid roof
+                    if x == 0: HouseExteriorTile(pos, 25, self.zone, self.house.tint, "right") # left below mid roof
+                    elif x == self.size_x-1: HouseExteriorTile(pos, 27, self.zone, self.house.tint, "left") # right below mid roof
+                    else: HouseExteriorTile(pos, 26, self.zone, self.house.tint,) # below mid roof
 
 class HouseInterior:
     def __init__(self, house:House, from_file, **kwargs):

@@ -85,7 +85,7 @@ class Soil:
                 for water in self.zone.soil_waters:
                     if water.grid_pos == (x,y): water.kill()
                 for plant in self.zone.soil_plants:
-                    if plant.grid_pos == (x,y): plant.kill()
+                    if plant.rect.colliderect(hit_rect): plant.kill()
                 return
 
     def create_soils(self):

@@ -1,21 +1,16 @@
 from settings import *
 
 class Inventory:
-    TOOLS = ["axe","hoe","water"]
-    OBJECTS = ["wheat-seeds","tomato-seeds"]
-    TOOLS_OBJS = TOOLS+OBJECTS
-    ITEMS = ["wood","tomato","wheat","grass","apple", "berry","egg","milk"]
-
     def __init__(self, player):
         self.player = player
 
         self.coins = self.water = self.stars = 0
-        self.selected_tool = "axe"
+        self.selected_tool = TOOLS[0]
         self.selected_object = ""
 
-        self.tools = {name:1 for name in self.TOOLS}
-        self.objects = {name:1 for name in self.OBJECTS}
-        self.items = {name:0 for name in self.ITEMS}
+        self.tools = {name:1 for name in TOOLS}
+        self.objects = {name:1 for name in OBJECTS}
+        self.items = {name:0 for name in ITEMS}
 
     # OBJECT
     def add_object(self, name, amount=1): self.objects[name] += amount
@@ -39,18 +34,34 @@ class Inventory:
     def has_money(self, amount): return self.coins >= amount
 
     def remove_money(self, amount): self.coins -= amount
+    
+    # STARS
+    def add_stars(self, amount=1): self.coins += amount
+
+    def has_stars(self, amount): return self.coins >= amount
+
+    def remove_stars(self, amount): self.coins -= amount
+    
+    # SELECT
+    def select_tool(self, tool):
+        self.selected_tool = tool
+        self.selected_object = ""
+        
+    def select_object(self, obj):
+        self.selected_object = obj
+        self.select_tool = ""
 
     # THING
     def has_thing(self, name, amount=1):
-        if name in self.OBJECTS: return self.objects[name] >= amount
+        if name in OBJECTS: return self.objects[name] >= amount
         else: return self.items[name] >= amount
 
     def add_thing(self, name, amount=1):
-        if name in self.OBJECTS: self.objects[name] += amount   
+        if name in OBJECTS: self.objects[name] += amount   
         else: self.items[name] += amount
 
     def remove_thing(self, name, amount=1):
-        if name in self.OBJECTS: self.remove_object(name, amount)
+        if name in OBJECTS: self.remove_object(name, amount)
         else: self.items[name] -= amount
     
     # WATER
@@ -69,14 +80,23 @@ class Inventory:
         if event.type == pygame.KEYDOWN:
             if event.unicode.isdecimal():
                 if int(event.unicode) in ITEM_SHORTCUT:
-                    thing = ITEM_SHORTCUT[int(event.unicode)]
-                    if thing in self.TOOLS:
-                        self.selected_tool = thing; self.selected_object = ""
-                    elif thing in self.OBJECTS:
-                        if self.objects[thing] > 0: self.selected_object = thing; self.selected_tool = ""
-                        else: self.selected_object = ""; self.selected_tool = ""
-                    else:
+                    thing = ITEM_SHORTCUT.get(int(event.unicode), None)
+                    if thing is None:
                         self.selected_tool = ""
                         self.selected_object = ""
+                    elif thing in TOOLS:
+                        self.selected_tool = thing; self.selected_object = ""
+                    elif thing in OBJECTS:
+                        if self.objects[thing] > 0: self.selected_object = thing; self.selected_tool = ""
+                        else: self.selected_object = ""; self.selected_tool = ""
+                        
                     self.player.world.ui.tab.close()
+                else:
+                    self.selected_tool = ""
+                    self.selected_object = ""
+                    
+            if event.key == pygame.K_BACKSLASH:
+                if self.selected_object:
+                    self.selected_object = ""
+                    self.selected_tool = TOOLS[0]
     

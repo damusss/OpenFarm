@@ -83,6 +83,44 @@ def rect_circle(rect, center, radius):
     return False
 
 # utils
+def tint_surface(surface: pygame.Surface, tint):
+    tinted = surface.copy()
+    tinted.fill(tint, special_flags=pygame.BLEND_RGB_ADD)
+    return tinted
+
+def generate_menu(original_image, width, height, border=4, scale=UI_SCALE):
+    # setup
+    s, s2, ss, ss2 = border, border*2, int(border*UI_SCALE), int(border*2*UI_SCALE)
+    width, height = int(width), int(height)
+    menu_surf: pygame.Surface = original_image
+    mw, mh = menu_surf.get_width(), menu_surf.get_height()
+    # main surfs
+    big_surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    big_surf.fill(0)
+    inner_surf = pygame.transform.scale(menu_surf.subsurface((s,s,mw-s2, mh-s2)), (width-ss2, height-ss2))
+    # corners
+    topleft = pygame.transform.scale_by(menu_surf.subsurface((0,0,s,s)), scale)
+    topright = pygame.transform.scale_by(menu_surf.subsurface((mw-s,0,s,s)), scale)
+    bottomleft = pygame.transform.scale_by(menu_surf.subsurface((0, mh-s, s,s)), scale)
+    bottomright = pygame.transform.scale_by(menu_surf.subsurface((mw-s, mh-s, s,s)), scale)
+    # sides
+    top = pygame.transform.scale(menu_surf.subsurface((s,0,mw-s2,s)), (width-ss2, ss))
+    bottom = pygame.transform.scale(menu_surf.subsurface((s, mh-s, mw-s2, s)), (width-ss2, ss))
+    left = pygame.transform.scale(menu_surf.subsurface((0, s, s, mh-s2)), (ss, height-ss2))
+    right = pygame.transform.scale(menu_surf.subsurface((mw-s, s, s, mh-s2)), (ss, height-ss2))
+    # blitting
+    big_surf.blit(inner_surf, (ss,ss))
+    big_surf.blit(topleft, (0,0))
+    big_surf.blit(topright, (width-ss, 0))
+    big_surf.blit(bottomleft, (0, height-ss))
+    big_surf.blit(bottomright, (width-ss, height-ss))
+    big_surf.blit(top, (ss,0))
+    big_surf.blit(bottom, (ss, height-ss))
+    big_surf.blit(left, (0, ss))
+    big_surf.blit(right, (width-ss, ss))
+    # return
+    return big_surf
+
 def generate_villager():
     name = choice(list(VILLAGERS.keys()))
     gen_data = VILLAGERS[name]
@@ -110,8 +148,14 @@ def quit_all():
 def get_window():
     return pygame.display.get_surface()
 
+def make_cursor(name, assets):
+    return pygame.Cursor((0,0),assets["ui"]["mouse"][name])
+
 def set_cursor(name, assets):
-    pygame.mouse.set_cursor(pygame.Cursor((0,0),assets["ui"]["mouse"][name]))
+    try:
+        pygame.mouse.set_cursor(pygame.Cursor((0,0),assets["ui"]["mouse"][name]))
+    except:
+        pass
 
 # graphics
 def load(path, convert_alpha, scale=1, ext="png"):
@@ -173,7 +217,18 @@ def load_sheet(path, convert_alpha, scale=1, size=REAL_TILE_SIZE, ext="png"):
     return [frame for frame in Spritesheet(load(path, convert_alpha, 1, ext), size).frames(scale)]
 
 # text
-def create_outline(
+def simple_outline(font, text, antialas, color, outline_color):
+    return font.render(text, antialas, color), font.render(text, antialas, outline_color)
+    
+def draw_outline(display_surface, outline_surf, text_trect, text_surf=None, outline_size=OUTLINE_SIZE):
+    display_surface.blit(outline_surf, text_trect.topleft+vector(-outline_size, -outline_size))
+    display_surface.blit(outline_surf, text_trect.topleft+vector(outline_size, -outline_size))
+    display_surface.blit(outline_surf, text_trect.topleft+vector(-outline_size, outline_size))
+    display_surface.blit(outline_surf, text_trect.topleft+vector(outline_size, outline_size))
+    if text_surf:
+        display_surface.blit(text_surf, text_trect)
+
+def complex_outline(
     surface: pygame.Surface,
     radius: int,
     color: pygame.Color | list[int] | tuple[int, ...] = (0, 0, 0, 255),

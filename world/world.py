@@ -1,5 +1,5 @@
 from settings import *
-from support import get_window, quit_all, set_cursor, file_names_strict
+from support import get_window, quit_all, file_names_strict, set_cursor
 from world.zone import Zone
 from world.player import Player
 from world.transition import Transition
@@ -89,11 +89,12 @@ class World:
 
         self.display_surface.fill(FOG_COLOR)
         self.current_zone.draw() if self.current_zone else None
+        self.dialogue.draw()
         self.ui.draw()
         self.transition.draw()
-        self.dialogue.draw()
-        self.player.selector.draw(True)
         self.dnc.draw()
+        
+        self.player.selector.post()
 
     def event_loop(self):
         for event in pygame.event.get():

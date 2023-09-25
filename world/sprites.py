@@ -1,6 +1,6 @@
 from settings import *
 from world.generic import Generic, HouseGeneric
-from support import angle_to_vec, randoffset
+from support import angle_to_vec, randoffset, tint_surface
 
 class Animal(Generic):
     def __init__(self, pos, animal_type, zone):
@@ -204,9 +204,10 @@ class HouseDecoration(HouseGeneric):
         self.collidable, self.door, self.floor, self.top, self.pos_center, self.is_tile = collidable, False, floor, False, pos_center, False
 
 class HouseExteriorTile(Generic):
-    def __init__(self, topleft, asset_index, zone, hitbox_change=None, roof=True, door=False, asset_name="house", behind=False):
+    def __init__(self, topleft, asset_index, zone, tint, hitbox_change=None, roof=True, door=False, asset_name="house", behind=False, chimney=False):
         super().__init__(topleft, zone.assets["house"][asset_name][asset_index], [zone.all, zone.village_elements], zone, False)
-        self.asset_index, self.asset_name, self.hitbox_change, self.roof, self.behind, self.door = asset_index, asset_name, hitbox_change, roof, behind, door
+        self.asset_index, self.asset_name, self.hitbox_change, self.roof, self.behind, self.door, self.tint, self.chimney = \
+            asset_index, asset_name, hitbox_change, roof, behind, door, tint, chimney
         if hitbox_change != "none": zone.collidable.add(self)
         if hitbox_change == "left":
             self.hitbox.scale_by_ip(scale_by=(0.25,1.0))
@@ -218,6 +219,7 @@ class HouseExteriorTile(Generic):
         elif behind: zone.visible_bottom.add(self)
         else: zone.visible.add(self)
         if door: zone.village_doors.add(self)
+        if roof and not chimney: self.image = tint_surface(self.image, tint)
 
 class BorderTree(Generic):
     def __init__(self, pos, zone, size):
@@ -377,10 +379,10 @@ class Decoration(Generic):
         self.data = data
 
     def can_interact(self, tool, object):
-        return tool in self.interact_item
+        return tool in self.interact_item and tool
 
     def interact(self, item, object):
-        if item in self.interact_item:
+        if item in self.interact_item and item:
             DestroyMask(self.pos, self.image, self.zone)
             self.kill()
             self.zone.player.inventory.add_item(self.drop_item, self.drop_amount)

@@ -1,6 +1,6 @@
 from settings import *
 from world.generic import Generic
-from support import get_window
+from support import get_window, set_cursor
 from world.inventory import Inventory
 import os, json
 
@@ -237,27 +237,28 @@ class Player(Generic):
     def translate(self, offset):
         self.teleport(self.pos+vector(offset))
 
-    def draw(self, screenshot=None):
-        if self.inventory.selected_object:
-            image = self.assets["items"][self.inventory.selected_object]
-            rect = image.get_rect(midbottom=self.hitbox.midbottom-self.world.offset)
-            if not screenshot: self.display_surface.blit(image, rect)
-            else: screenshot.blit(image, rect.topleft-self.world.current_zone.pixel_topleft)
-        self.selector.draw()
-
 class InteractSelector:
     def __init__(self, player:Player):
         self.player = player
         self.selector_images = player.world.assets["ui"]["selector"]
         self.display_surface = player.display_surface
 
+        self.was_interacting = False
         self.interact_rect = None
         self.is_ui = self.just_pressed = False
         self.selector_size = self.selector_images[0].get_width()//2
         self.selector_offset = vector(-self.selector_size,-self.selector_size)
+        
+    def post(self):
+        if self.interact_rect and not self.was_interacting:
+            self.was_interacting = True
+            set_cursor("cat-mouse", self.player.assets)
+        if not self.interact_rect and self.was_interacting:
+            self.was_interacting = False
+            set_cursor("trig-1", self.player.assets)
 
     def draw(self, UI=False):
-        if self.interact_rect and (not self.is_ui or UI):
+        if self.interact_rect:
             offset = self.player.world.offset if not self.is_ui else vector()
             self.display_surface.blit(self.selector_images[0], self.interact_rect.topleft+self.selector_offset-offset)
             self.display_surface.blit(self.selector_images[1], self.interact_rect.topright+self.selector_offset-offset)

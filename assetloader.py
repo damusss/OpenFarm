@@ -1,5 +1,5 @@
 from settings import *
-from support import load, load_list, load_dict, single_sheet, load_sheet, file_names
+from support import load, load_list, load_dict, single_sheet, load_sheet, file_names, make_cursor
 
 class AssetLoader:
     def __init__(self):
@@ -57,23 +57,30 @@ class AssetLoader:
             "berry": load_list("farming/berry", True, SMALL_SCALE),
         }
         self.assets["ui"] = {
-            "settings-menu": load("ui/settings-menu", True, UI_SCALE),
-            "menu": load("ui/menu", True, UI_SCALE),
-            "long-menu": load("ui/long-menu", True, UI_SCALE),
             "frame": load("ui/frame", True, UI_SCALE_B),
             "btn": load("ui/btn", True, UI_SCALE_B),
+            
+            "settings-menu": load("ui/settings-menu", True, UI_SCALE),
+            "original-menu": load("ui/menu", True, 1),
+            "menu": load("ui/menu", True, UI_SCALE),
+            "long-menu": load("ui/long-menu", True, UI_SCALE),
             "frame-big": load("ui/frame-big", True, UI_SCALE),
             "sign": load("ui/sign", True, UI_SCALE),
             "signs": load("ui/signs", True, UI_SCALE),
             "square-m": load("ui/square-m", True, UI_SCALE),
             "button": load("ui/button", True, UI_SCALE),
             "button-pressed": load("ui/button-pressed", True, UI_SCALE),
-            "dialogue": load_dict("ui/dialogue", True, UI_SCALE),
-            "mouse": load_dict("ui/mouse", True, UI_SCALE_S),
-            "selector": load_sheet("ui/sheets/selector", True, UI_SCALE, 12),
             "bar": load("ui/bar", True, UI_SCALE),
             "bar-full": load("ui/bar-full", True, UI_SCALE),
             "double-arrow": load("ui/double-arrow", True, UI_SCALE),
+            
+            "sun": load("ui/sun", True, 1),
+            "moon": load("ui/moon", True, 1),
+            
+            "dialogue": load_dict("ui/dialogue", True, UI_SCALE),
+            "mouse": load_dict("ui/mouse", True, UI_SCALE_S),
+            "selector": load_sheet("ui/sheets/selector", True, UI_SCALE, 12),
+            
             "icons": {
                 "emotes": load_sheet("ui/sheets/emotes", True, UI_SCALE, MID_REAL_TILE_SIZE),
                 "all": load_sheet("ui/sheets/icons-all", True, UI_SCALE_B, SMALL_REAL_TILE_SIZE),
@@ -81,9 +88,11 @@ class AssetLoader:
                 "white":load_sheet("ui/sheets/icons", True, UI_SCALE_B, SMALL_REAL_TILE_SIZE),
                 "emoji":load_sheet("ui/sheets/icons-emoji", True, UI_SCALE_B, SMALL_REAL_TILE_SIZE),
             },
+            
             "items": load_dict("items", True, UI_SCALE_B),
             "items-small": load_dict("items", True, UI_SCALE)
         }
+        self.cursors = {name: make_cursor(name, self.assets) for name in self.assets["ui"]["mouse"].keys()}
 
     def __getitem__(self, name):
         return self.assets[name]

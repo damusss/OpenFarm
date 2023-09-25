@@ -67,7 +67,9 @@ class Zone:
                     "roof": village_element.roof,
                     "behind": village_element.behind,
                     "door": village_element.door,
-                    "kinematic": village_element.kinematic
+                    "kinematic": village_element.kinematic,
+                    "tint": village_element.tint,
+                    "chimney": village_element.chimney
                 } for village_element in self.village_elements
             ],
             "village-houses": [
@@ -78,6 +80,7 @@ class Zone:
                     "enter-loc": (house.interior.enter_loc.x, house.interior.enter_loc.y),
                     "sizex": house.interior.size_x,
                     "sizey": house.interior.size_y,
+                    "tint": house.tint,
                     "tiles" : [
                         {
                             "pos": tile.rect.center if tile.pos_center else tile.rect.topleft,
@@ -188,7 +191,7 @@ class Zone:
         self.floor_rect = self.floor_surf.get_rect(topleft=self.pixel_topleft)
         self.build_fog()
         for element in data["village-elements"]:
-            h = HouseExteriorTile(element["topleft"], element["asset-index"], self, element["hitbox-change"], element["roof"], element["door"], element["asset-name"], element["behind"])
+            h = HouseExteriorTile(element["topleft"], element["asset-index"], self, element["tint"], element["hitbox-change"], element["roof"], element["door"], element["asset-name"], element["behind"], element["chimney"])
             h.kinematic = element["kinematic"]
         for side, border_tree in data["border-trees"].items():
             pack = BorderTreePack(side, self)
@@ -216,7 +219,7 @@ class Zone:
                 if water.rect.collidepoint(vector(tile["topleft"][0]+H_TILE_SIZE, tile["topleft"][1]+H_TILE_SIZE)): wat_tile = water; break
             Tile(tile["topleft"], self.assets["world"][tile["asset-name"]][tile["asset-index"]], self, tile["asset-name"], tile["asset-index"], wat_tile)
         for house in data["village-houses"]:
-            h = House(house["topleft"],house["grid-pos"], self, True, sizex=house["sizex"], sizey=house["sizey"])
+            h = House(house["topleft"],house["grid-pos"], self, True, house["tint"], sizex=house["sizex"], sizey=house["sizey"])
             self.village_houses.append(h)
             self.village_grid.append(f"{int(house['grid-pos'][0])};{int(house['grid-pos'][1])}")
             h.exterior.exit_loc = vector(house["exit-loc"])
@@ -302,7 +305,7 @@ class Zone:
         self.build_sunflowers()
 
     def build_village(self):
-        if randint(0,100) > 30: return
+        if randint(0,100) > 40: return
         house_amount = randint(3,12)
         first_house = House(self.pixel_center,(0,0),self)
         self.village_houses.append(first_house)
@@ -493,14 +496,12 @@ class Zone:
     def draw(self):
         if self.in_house:
             self.current_house.interior.draw()
-            self.player.draw()
             return
         self.display_surface.blit(self.floor_surf, vector(self.floor_rect.topleft)-self.world.offset)
         self.visible_water.custom_draw()
         self.visible_behind.custom_draw()
         self.visible_bottom.custom_draw()
         self.visible.custom_draw()
-        self.player.draw()
         self.visible_top.custom_draw()
         
         for tree in self.border_trees: tree.draw()
@@ -525,7 +526,6 @@ class Zone:
         self.visible_behind.screenshot(screenshot)
         self.visible_bottom.screenshot(screenshot)
         self.visible.screenshot(screenshot)
-        self.player.draw(screenshot)
         self.visible_top.screenshot(screenshot)
         for tree in self.border_trees: tree.screenshot(screenshot)
         current_time = datetime.datetime.now()

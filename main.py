@@ -22,7 +22,9 @@ class Main:
     def run(self):
         while True:
             dt = self.clock.tick(WINDOW_FPS)*0.001
-            if self.in_world: self.world.run(dt)
+            if self.in_world:
+                self.world.run(dt)
+                
             pygame.display.update()
             pygame.display.set_caption(f"{self.clock.get_fps():.0f}")
 

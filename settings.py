@@ -20,12 +20,15 @@ NIGHT_COLOR = (0,50,120)
 TRANSITION_COL = FOG_COLOR
 
 # COOLDOWNS
-BERRY_COOLDOWN = 60*1000
-TREE_COOLDOWN = 10*60*1000
-COW_COOLDOWN = 4*60*1000
-CHICKEN_COOLDOWN = 3*60*1000
-DAY_TIME = 10*60*1000
-NIGHT_TIME = 6*60*1000
+BERRY_COOLDOWN =       60*1000
+TREE_COOLDOWN = 10    *60*1000
+COW_COOLDOWN = 4      *60*1000
+CHICKEN_COOLDOWN = 3  *60*1000
+DAY_START = 8         *3600
+SUNRISE_TIME = 6      *3600
+SUNSET_TIME = 19      *3600
+MIDNIGHT_TIME = 24    *3600
+DAY_END = 21          *3600
 CROP_COOLDOWNS = {
     "tomato": 5*60*1000,
     "wheat": 4*60*1000,
@@ -33,7 +36,7 @@ CROP_COOLDOWNS = {
 
 # SPEEDS
 ANIMATION_SPEED = 6
-NIGHT_SPEED = 0.2
+TIME_SPEED = 1
 BAG_SPEED = 10
 TAB_SPEED = 20
 DIALOGUE_SPEED = 10
@@ -76,8 +79,24 @@ WINDOW_WEIGHTS = [100,20]
 TREE_SIZES =  ["small", "medium"]
 USE_SMALL = ["house"]
 FOG_SIZE = int(TILE_SIZE*3)
-NIGHT_ALPHA = 100
+NIGHT_ALPHA = 70
 TRANSITION_THRESHOLD = 30
+TINTS = [
+    (0, 0, 0),
+    (20, 0, 0),
+    (0, 20, 0),
+    (0, 0, 20),
+    (20, 20, 0),
+    (20, 0, 20),
+    (0, 20, 20),
+    (20, 20, 20),
+    (20, 10, 0),
+    (10, 0, 20),
+    (0, 10, 20),
+    (0, 20, 10),
+    (10, 20, 0),
+]
+NO_TINT = (0,0,0)
 
 # PLAYER
 PLAYER_MAX_WATER = 20
@@ -88,18 +107,26 @@ ITEM_SHORTCUT = {
     3: "water",
     4: "wheat-seeds",
     5: "tomato-seeds",
-    6: "",
 }
+
+# INVENTORY
+TOOLS = ["axe","hoe","water"]
+OBJECTS = ["wheat-seeds","tomato-seeds"]
+ITEMS = ["wood","tomato","wheat","grass","apple", "berry","egg","milk"]
+LOCKED_TOOLS = []
+PLACEABLE = []
 
 # MENU
 UI_OFFSET = int(10*SCALE)
 UI_OFFSET_H = UI_OFFSET//2
 ANTIALAS = False
+OUTLINE_SIZE = 2
 
 # VILLAGER
 VILLAGERS = {
     "Soil Farmer" : {
         "trade": True,
+        "craft": False,
         "trade-num": (3,5),
         "trades": {
             "grass": 1,
@@ -111,6 +138,7 @@ VILLAGERS = {
     },
     "Wood Cutter": {
         "trade": True,
+        "craft": False,
         "trade-num": (1,2),
         "trades": {
             "wood": 3,
@@ -119,6 +147,7 @@ VILLAGERS = {
     },
     "Tree Farmer":{
         "trade": True,
+        "craft": False,
         "trade-num": (2,3),
         "trades": {
             "apple": 6,
@@ -128,6 +157,7 @@ VILLAGERS = {
     },
     "Animal Farmer": {
         "trade": True,
+        "craft": False,
         "trade-num": (2,4),
         "trades": {
             "milk": 40,
@@ -138,11 +168,19 @@ VILLAGERS = {
     },
     "Villager": {
         "trade": False,
+        "craft": False,
         "dialogues": [
             "Hi, welcome to our village!",
             "Welcome adventurer. Please help us!",
             "I thought noone could travel through the dark forest!",
             "Welcome, welcome! We will be happy to trade with you!",
         ] 
-    }
+    },
+#    "Crafter": {
+#        "trade": False,
+#        "craft": True,
+#        "crafts": [
+#            ["wood", 3, "fence", 1]
+#        ]
+#    }
 }
