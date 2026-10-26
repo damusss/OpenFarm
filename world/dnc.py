@@ -9,12 +9,9 @@ class DayNightCycle:
 
         self.dnc_surf = pygame.Surface(WINDOW_SIZES)
         self.dnc_surf.fill(NIGHT_COLOR)
-        self.max_alpha = NIGHT_ALPHA
         self.dnc_surf.set_alpha(0)
         self.alpha = 0
         self.is_day = True
-        self.dn_start_time = pygame.time.get_ticks()
-        self.alpha_dir = 0
         
         self.time = DAY_START
         

@@ -29,23 +29,28 @@ class Dialogue:
         self.can_render = self.do_trade = self.active = False
         self.pfp = self.name = self.data = None
 
-    def start(self, pfp, name, data):
+    def start(self, pfp, name, data, merchant):
         self.active= self.can_render = True
         self.pfp, self.name, self.data = pfp, name, data
+        self.merchant = merchant
         self.build()
 
     def build(self):
         self.do_trade = self.data["trade"]
         self.dest_offset = self.trade_open_offset if self.do_trade else self.dialogue_open_offset
         self.name_txt = self.name_font.render(f"{self.name}", ANTIALAS, TEXT_DARK)
+        
         # TRADE
         if self.do_trade:
             self.name_trect = self.name_txt.get_rect(midtop=(self.trade_rect.centerx,self.trade_rect.top+UI_OFFSET))
+            self.xp_txt = self.amount_font.render(f"{VILLAGER_LEVELS[self.merchant.level]} - {self.merchant.xp} XP", ANTIALAS, TEXT_DARK)
+            self.xp_trect = self.xp_txt.get_rect(midbottom = (self.trade_rect.centerx, self.trade_rect.bottom-UI_OFFSET))
+            
             self.trade_btns, self.double_arrows = [],[]
 
             y = self.name_trect.bottom+UI_OFFSET*2
             for item_name, item_amount, price in self.data["trades"]:
-                left_btn = DialogueTradeButton(self.ui_assets, item_amount, False, item_name, self.amount_font)
+                left_btn = DialogueTradeButton(self.ui_assets, item_amount*(self.merchant.level+1), False, item_name, self.amount_font)
                 right_btn = DialogueTradeButton(self.ui_assets, price, True, None, self.amount_font)
 
                 left_btn.bg_rect = left_btn.bg.get_rect(topright=(self.trade_rect.centerx-UI_OFFSET*4, y))
@@ -87,6 +92,7 @@ class Dialogue:
         if not self.can_render: return
         if self.do_trade:
             self.display_surface.blit(self.trade_bg, self.trade_rect.topleft+self.offset)
+            self.display_surface.blit(self.xp_txt, self.xp_trect.topleft+self.offset)
             for btn in self.trade_btns: btn.draw(self.display_surface, self.offset)
             for img, rect in self.double_arrows: self.display_surface.blit(img, rect.topleft+self.offset)
         else:
@@ -99,13 +105,27 @@ class Dialogue:
         if btn.is_coin:
             item_name, amount = btn.side_btn.item_name, btn.side_btn.amount
             if self.inventory.has_thing(item_name, amount):
-                self.inventory.add_money(btn.amount)
+                self.inventory.add_money(btn.amount*(self.merchant.level+1))
                 self.inventory.remove_thing(item_name, amount)
+                self.trade_completed(btn.amount)
         else:
             price = btn.side_btn.amount
             if self.inventory.has_money(price):
                 self.inventory.add_thing(btn.item_name, btn.amount)
                 self.inventory.remove_money(price)
+                self.trade_completed(price*(self.merchant.level+1))
+        self.build()
+        
+    def trade_completed(self, price):
+        xp_add = int(math.log2(max(self.inventory.stars+price, 2)**3)**2)
+        stars_add = randint(VILLAGER_STAR_RANGE[0], VILLAGER_STAR_RANGE[1]) * (self.merchant.level+1)
+        
+        self.inventory.add_stars(stars_add)
+        self.merchant.xp += xp_add
+        if self.merchant.level >= VILLAGER_MAX_LEVEL: return
+        if self.merchant.xp >= VILLAGER_XPS[self.merchant.level]:
+            self.merchant.level += 1
+            self.merchant.xp = 0
 
     def event(self, event):
         if not self.active: return

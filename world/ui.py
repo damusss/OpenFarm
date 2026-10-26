@@ -13,7 +13,7 @@ class UI:
         # fonts
         self.bag_font = main_font(18)
         self.title_font = main_font(22)
-        self.amount_font = main_font(16)
+        self.amount_font = main_font(13.5)
 
         # emote
         self.frame_big = self.ui_assets["frame-big"]
@@ -111,9 +111,9 @@ class UI:
         self.dnc_rect.topleft = (self.emote_frame_rect.left+UI_OFFSET, self.emote_frame_rect.top+UI_OFFSET)
         
         self.coin_txt = self.amount_font.render(f"{self.inventory.coins}", ANTIALAS, TEXT_DARK)
-        self.star_txt = self.amount_font.render(f"{self.inventory.stars}", ANTIALAS, TEXT_DARK)
-        self.coin_trect = self.coin_txt.get_rect(midleft=self.coin_rect.midright)
-        self.star_trect = self.star_txt.get_rect(midleft=self.star_rect.midright)
+        self.star_txt = self.amount_font.render(f"{self.inventory.stars}" if self.inventory.stars < MAX_STARS else "Max", ANTIALAS, TEXT_DARK)
+        self.coin_trect = self.coin_txt.get_rect(midleft=(self.coin_rect.right-10, self.coin_rect.centery))
+        self.star_trect = self.star_txt.get_rect(midleft=(self.star_rect.right-2, self.star_rect.centery))
         
         self.bag.update(dt)
         self.tab.update(dt)

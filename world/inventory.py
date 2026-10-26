@@ -37,11 +37,14 @@ class Inventory:
     def remove_money(self, amount): self.coins -= amount
     
     # STARS
-    def add_stars(self, amount=1): self.coins += amount
+    def add_stars(self, amount=1):
+        self.stars += amount
+        if self.stars > MAX_STARS:
+            self.stars = MAX_STARS
 
-    def has_stars(self, amount): return self.coins >= amount
+    def has_stars(self, amount): return self.stars >= amount
 
-    def remove_stars(self, amount): self.coins -= amount
+    def remove_stars(self, amount): self.stars -= amount
     
     # SELECT
     def select_tool(self, tool):

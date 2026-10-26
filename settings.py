@@ -110,6 +110,7 @@ PLAYER_MAX_WATER = 20
 INTERACT_RADIUS = TILE_SIZE*4
 
 # inventory
+MAX_STARS = 8000
 TOOLS = ["axe","hoe","water"]
 OBJECTS = ["wheat-seeds","tomato-seeds", "fence"]
 ITEMS = ["wood","tomato","wheat","grass","apple", "berry","egg","milk"]
@@ -124,6 +125,26 @@ ANTIALAS = False
 OUTLINE_SIZE = 2
 
 # VILLAGER
+VILLAGER_LEVELS = [
+    "Noob",
+    "Beginner",
+    "Apprentice",
+    "Journeyman",
+    "Expert",
+    "Master",
+    "Greatest"
+]
+VILLAGER_XPS = [
+    100,
+    500,
+    1500,
+    5000,
+    10000,
+    30000,
+]
+VILLAGER_STAR_RANGE = (1, 3)
+VILLAGER_MAX_LEVEL = len(VILLAGER_LEVELS)-1
+
 VILLAGERS = {
     "Soil Farmer" : {
         "trade": True,

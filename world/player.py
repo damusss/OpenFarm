@@ -32,7 +32,10 @@ class Player(Generic):
             "objects": self.inventory.objects,
             "items": self.inventory.items,
             "sel-object": self.inventory.selected_object,
-            "sel-tool": self.inventory.selected_tool
+            "sel-tool": self.inventory.selected_tool,
+            "position": self.rect.center,
+            "zone": self.world.current_zone.tuple_pos if self.world.current_zone else (0,0),
+            "dnc_time": self.world.dnc.time,
         }
         with open(f"data/{self.world.name}/player.json", "w") as save_file:
             json.dump(data, save_file)
@@ -49,6 +52,10 @@ class Player(Generic):
             self.inventory.items = data["items"]
             self.inventory.selected_object = data["sel-object"]
             self.inventory.selected_tool = data["sel-tool"]
+            
+            self.world.first_zone = data["zone"]
+            self.teleport(data["position"])
+            self.world.dnc.time = data["dnc_time"]
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -151,7 +158,7 @@ class Player(Generic):
                 if villager.hitbox.colliderect(interact_rect):
                     self.selector.interact_rect = villager.hitbox
                     if self.selector.just_pressed:
-                        self.world.dialogue.start(villager.pfp, villager.name, villager.data)
+                        self.world.dialogue.start(villager.pfp, villager.name, villager.data, villager)
 
     def interact_finish(self):
         self.using_item = False

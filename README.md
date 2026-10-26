@@ -1,8 +1,13 @@
-# Open Farm WIP
+![Abandoned](https://shields.io/badge/Status-Abandoned-orange)
+
+> [!WARNING]
+> The game's developement has been interrupted with no short term plan to revive it. The game is currently playable with some content but no game loop.
+
+# Open Farm
 
 ### Source code for the Open Farm game
 
-Author: Damus666<br>
+Author: Damus<br>
 Programming Language: [Python 3.11.3](https://www.python.org)<br>
 Framework: [pygame-ce 2.3.1 (SDL 2.26.5)](https://pyga.me)<br>
 License: MIT<br>

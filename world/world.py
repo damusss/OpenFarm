@@ -15,18 +15,21 @@ class World:
         self.display_surface = get_window()
         self.name = world_name
         set_cursor("trig-1", self.assets)
+        self.first_zone = (0,0)
+        self.current_zone = None
 
+        self.dnc = DayNightCycle(self)
         self.offset = vector()
         self.player = Player(self)
         self.ui = UI(self)
         self.transition = Transition(self)
         self.dialogue = Dialogue(self)
-        self.dnc = DayNightCycle(self)
         self.placing = PlacingSystem(self)
 
+        str_first_zone = f"{int(self.first_zone[0])};{int(self.first_zone[1])}"
         self.zones = file_names_strict(f"data/{self.name}", ["player"], ["json"])
-        self.current_zone = Zone(self, (0,0), from_file = True if "0;0" in self.zones else False)
-        if not "0;0" in self.zones: self.zones.append("0;0")
+        self.current_zone = Zone(self, self.first_zone, from_file = True if str_first_zone in self.zones else False)
+        if not str_first_zone in self.zones: self.zones.append(str_first_zone)
         
         self.next_translate = (0,0)
         self.next_zone = None

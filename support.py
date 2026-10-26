@@ -131,6 +131,7 @@ def generate_villager():
         return name, {"trade":False, "dialogue": dialogue}
     
 def item_shortcut(idx):
+    idx -= 1  
     if idx < len(TOOLS):
         return TOOLS[idx]
     if idx < len(TOOLS)+len(OBJECTS):

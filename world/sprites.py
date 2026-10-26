@@ -169,12 +169,13 @@ class InvisibleVillageElementTile(pygame.sprite.Sprite):
         self.asset_name = "invisible"
 
 class Merchant(HouseGeneric):
-    def __init__(self, center, interior, name, data):
+    def __init__(self, center, interior, name, data, level=0, xp=0):
         super().__init__(center, interior.zone.assets["animals"]["merchant"][0], [interior.all, interior.visible, interior.updates, interior.villagers], interior.house, True)
         self.add_animator(interior.zone.assets["animals"]["merchant"])
         self.can_save = False
         self.name, self.data = name, data
         self.pfp = pygame.transform.scale_by(interior.zone.assets["animals"]["merchant"][0],1.5)
+        self.level, self.xp = level, xp
 
     def update(self, dt):
         self.animator.update(dt)

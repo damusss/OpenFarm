@@ -16,6 +16,7 @@ class Zone:
 
         self.string_pos = f"{int(zone_pos[0])};{int(zone_pos[1])}"
         self.zone_pos = vector(zone_pos)
+        self.tuple_pos = (zone_pos[0], zone_pos[1])
         self.pixel_center = vector(self.zone_pos.x*ZONE_SIZE,self.zone_pos.y*ZONE_SIZE)
         self.pixel_topleft = vector(self.pixel_center.x-H_ZONE_SIZE, self.pixel_center.y-H_ZONE_SIZE)
 
@@ -99,6 +100,8 @@ class Zone:
                             "center": villager.rect.center,
                             "name": villager.name,
                             "data": villager.data,
+                            "level": villager.level,
+                            "xp": villager.xp,
                         } for villager in house.interior.villagers
                     ]
                 } for house in self.village_houses
@@ -231,7 +234,7 @@ class Zone:
                 else:
                     HouseDecoration(tile["pos"], tile["asset-index"], h.interior, tile["collidable"], tile["floor"], tile["pos-center"])
             for villager in house["villagers"]:
-                Merchant(villager["center"], h.interior, villager["name"], villager["data"])
+                Merchant(villager["center"], h.interior, villager["name"], villager["data"], villager["level"], int(villager["xp"]))
         for zone in data["chicken-houses"]:
             self.chicken_zones.append([pygame.Rect(zone["rect"]),ChickenHouse(zone["house"], self)])
         for animal in data["animals"]:
@@ -301,6 +304,7 @@ class Zone:
         self.build_borders()
         self.build_fog()
         self.build_village()
+        self.build_wandering_animals()
         self.build_water()
         self.build_decorations()
         self.build_trees()
@@ -345,6 +349,15 @@ class Zone:
                             chicken_house = ChickenHouse(bounds_rect.center, self)
                             self.chicken_zones.append([bounds_rect, chicken_house])
                         break
+                    
+    def build_wandering_animals(self):
+        for _ in range(randint(10,15)):
+            pos = (self.pixel_topleft.x+randint(0,ZONE_SIZE),self.pixel_topleft.y+ randint(0,ZONE_SIZE))
+            animal_type = choice(["cow", "chicken"])
+            if animal_type == "cow":
+                Cow(pos, self)
+            elif animal_type == "chicken":
+                Chicken(pos, self, pygame.Rect(pos, (TILE_SIZE, TILE_SIZE)))
         
     def build_borders(self):
         left = BorderTreePack("left", self)
